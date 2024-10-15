@@ -446,9 +446,9 @@ class QRCode():
 
     def out_svg(self,
                 filename=None,
-                dark='black',
-                light=None,
-                background=None,
+                dark="black",
+                light="white",
+                background="white",
                 padding=2):
         """ Output as an svg
 
