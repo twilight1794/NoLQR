@@ -445,33 +445,47 @@ class QRCode():
         print(EMPTY*(len(self.matrix)+4))
 
     def out_svg(self,
-                filename,
-                dark="black",
-                light="white",
-                background="white"):
+                filename=None,
+                dark='black',
+                light=None,
+                background=None,
+                padding=2):
         """ Output as an svg
 
-        Output the QR Code to an svg file.
+        Output the QR Code to an svg file or string.
         Loops over the matrix, and makes a rect for each square.
-        Also makes a colored background.
+        Also can make a colored background.
         Custom colors and sizes can be provided as arguments.
         """
-        filename = filename.rstrip()
-        if not filename.endswith(".svg"):
-            filename = "{}.svg".format(filename)
         rect = '    <rect x="{}" y="{}" height="{}" width="{}" fill="{}" />\n'
+        path = '    <path fill="{}" stroke="none" d="{}" />\n'
+        sect = "M{},{}h1v1h-1v-1 "
         out = '<?xml version="1.0" encoding="UTF-8" ?>\n'
         out += '<!-- Generated with NoLQR, QR code generation lighter ' \
             'than an unladen swallow -->\n'
         out += '<!-- Visit https://github.com/Jelmerro/NoLQR ' \
             'for updates and details -->\n'
-        out += '<svg height="{}" width="{}" xmlns="http://www.w3.org/' \
-            '2000/svg" version="1.1">\n'.format(self.width+4, self.width+4)
-        out += rect.format(0, 0, self.width+4, self.width+4, background)
+        out += '<svg viewBox="0 0 {} {}" xmlns="http://www.w3.org/' \
+            '2000/svg" version="1.1">\n'.format(self.width+padding*2, self.width+padding*2)
+        if background:
+            out += rect.format(0, 0, self.width+padding*2, self.width+padding*2, background)
+        out_dark = ""
+        out_light = ""
         for row in range(0, self.width):
             for col in range(0, self.width):
-                out += rect.format(
-                    2 + row, 2 + col, 1, 1,
-                    dark if self.matrix[col][row] else light)
-        with open(filename, "w") as f:
-            f.write(out + "</svg>")
+                if self.matrix[col][row] and dark:
+                    out_dark += sect.format(padding + row, padding + col)
+                elif not self.matrix[col][row] and light:
+                    out_light += sect.format(padding + row, padding + col)
+        if dark:
+            out += path.format(dark or "none", out_dark)
+        if light:
+            out += path.format(light or "none", out_light)
+        if filename:
+            filename = filename.rstrip()
+            if not filename.endswith(".svg"):
+                filename = "{}.svg".format(filename)
+            with open(filename, "w") as f:
+                f.write(out + "</svg>")
+        else:
+            return out + "</svg>"
