@@ -1,0 +1,15 @@
+[project]
+name = "nolqr"
+version = "20241014"
+description = "Lovely Spam! Wonderful Spam!"
+readme = "README.md"
+license = "MIT"
+keywords = "qr"
+classifiers = [ "Topic :: Utilities" ]
+
+authors = [
+  {name = "Jelmer van Arnhem"},
+]
+maintainers = [
+  {name = "Giovanni Garciliano", email = "hola@campanita.org"}
+]
