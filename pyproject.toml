@@ -1,10 +1,10 @@
 [project]
 name = "nolqr"
 version = "20241014"
-description = "Lovely Spam! Wonderful Spam!"
+description = "QR code generation lighter than an unladen swallow."
 readme = "README.md"
 license = "MIT"
-keywords = "qr"
+keywords = [ "qr" ]
 classifiers = [ "Topic :: Utilities" ]
 
 authors = [
